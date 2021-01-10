@@ -1,6 +1,6 @@
 # Sprite Meister
 
-SpriteMeister Web Component configures and plays image/svg sprite sheets in CSS background or IMG
+SpriteMeister Web Component configures and plays image/SVG sprite sheets in CSS background or IMG
 
 ````html
 <sprite-player cells="16x16" size="64x64" wrap="true" src="earth.png"></sprite-player>
