@@ -1,0 +1,16 @@
+<svg viewBoix="0 0 100 100">
+    <g fill='yellow'>
+        <circle cx='50' cy='50' fill='#ECBE3D' r='47'></circle>
+        <ellipse cx='45' cy='50' rx='47' ry='47' fill='#F9D344' transform='rotate(45 50 50)'></ellipse>
+        <g id='eye'>
+            <circle cx='30' cy='30' fill='#ECBE3D' r='17'></circle>
+            <circle cx='30' cy='30' fill='white' r='15'></circle>
+            <circle cx='30' cy='30' fill='black' r='7'></circle>
+            <ellipse cx='27' cy='27' rx='1.5' ry='2.5' fill='white' transform='rotate(45 27 27)'></ellipse>
+        </g>
+        <use x='50' y='30' href='#eye' transform='rotate(90 90 40)'></use>
+        <path fill="#393C40" d="m80 55q-2-2-2-1q-25 11-52 0q-2-1-2 1q-2 2-1 2q8 26 30 26q20 0 30-26z"></path>
+        <path fill="#D34647" stroke="none" d="m56 83q3 0 5-4q2-7 0-8q-2 0-5 1q-5 1-9-1q-4 0-3 4q0 0 0 0q3 8 8 8q0 0 0 0z">
+            </path>
+    </g><text y='99'>n:${framenr}</text>
+</svg>

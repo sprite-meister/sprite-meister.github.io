@@ -1,0 +1,487 @@
+<html>
+  <head>
+    <title>SpriteMeister</title>
+    <script src="console.js"></script>
+    <script src="elements.spritecreator.js"></script>
+    <script src="element.js"></script>
+    <!-- -------------------------------------------------------- template arcs -->
+    <template spritemeister id="arcs" duration="4s">
+      ${v2=arcpath([0,50],[100,50],[30,50,70,50],1)} ${v1=arcpath([15,70,p5],[75,70],[15,50,75,50],2)}
+      <!-- comments -->
+      <circle cx="${v1.x}" cy="${v1.y}" r="3"></circle>
+      <text y="12" font-size="10px">${framenr} x:${v1.x} y:${v1.y}</text>
+    </template>
+    <!-- -------------------------------------------------------- template hamarrow1 -->
+    <template spritemeister id="hamarrow1" duration="4s">
+      ${v1=round(40-ease(25)) , v2=50 , v3=ease(20)}
+      <g stroke="black" stroke-width="8" stroke-linecap="round" transform="${rotate(180-ease(180))}">
+        <path d="M${v1} 30L85 ${v2 - v3}"></path>
+        <path d="M15 50L85 50"></path>
+        <path d="M${v1} 70L85 ${v2 + v3}"></path>
+      </g>
+    </template>
+    <!-- -------------------------------------------------------- template hamarrow2 -->
+    <template spritemeister id="hamarrow2" duration="4s">
+      <g stroke="lightcoral" stroke-width="8" stroke-linecap="round">
+        <path d="M15 30L85 30"></path>
+        <path d="M15 50L85 50"></path>
+        <path d="M85 70L15 70"></path>
+      </g>
+      <g stroke="green" stroke-width="8" stroke-linecap="round">
+        <path d="M50 70L20 50"></path>
+        <path d="M75 50L20 50"></path>
+        <path d="M50 30L20 50"></path>
+      </g>
+      ${v1=arcpath([15,30],[50,30],[40,15],3)} ${v2=arcpath([85,30],[20,50],[85,60,20,80],4)}
+      ${v3=arcpath([15,50],[75,50],[50,20],1)} ${v4=arcpath([85,50],[20,50],[50,70],2)}
+      ${v5=arcpath([85,70],[20,50],[30,90],5)} ${v6=arcpath([15,70],[50,70],[40,40],6)}
+      <g stroke="black" stroke-width="8" stroke-linecap="round">
+        <path d="M${v1.x} ${v1.y}L${v2.x} ${v2.y}"></path>
+        <path d="M${v3.x} ${v3.y}L${v4.x} ${v4.y}"></path>
+        <path d="M${v5.x} ${v5.y}L${v6.x} ${v6.y}"></path>
+      </g>
+    </template>
+    <!-- -------------------------------------------------------- template fbheart -->
+    <template spritemeister id="fbheart">
+      <defs>
+        <radialgradient id="gradient${framenr}">
+          <stop offset="0%" stop-color="lightcoral"></stop>
+          <stop offset="${pulse(100,0)}%" stop-color="red"></stop
+        ></radialgradient>
+      </defs>
+      <circle cx="50" cy="50" r="40" fill="url(#gradient${framenr})"></circle>
+      <g transform="rotate(${5 + ease(-15,15)} 50 50) ${scale(.5,.6)}">
+        <path
+          d="m89 25c-3-7-13-14-25-10a27 27 90 00-15 10a27 27 90 00-15-10c-12-3-21 3-26 10c-5 11-3 21 7 35c7 9 17 20 33 30a3 3 90 003 0c16-11 26-21 33-30c10-13 12-24 5-35z"
+          fill="beige"
+        ></path>
+      </g>
+    </template>
+    <!-- -------------------------------------------------------- template fbthumb -->
+    <template spritemeister id="fbthumb" duration="1s">
+      <circle cx="50" cy="50" r="40" fill="royalblue"></circle>
+      <path
+        transform="rotate(${ease(-15)} 50 50)"
+        fill="white"
+        d="m32 45h-8c-1 0-2 1-2 2v24c0 1 1 2 2 2h8c1 0 2-1 2-2v-23c0-1-1-2-2-3zm-4 25c-1 0-2-1-2-2s1-2 2-2s2 1 2 2s-1 2-2 2zm32-39c0 4-3 7-3 9h10c3 0 6 3 6 6c0 2-1 4-2 5l0 0c1 2 1 6-1 8c1 3 0 6-2 7c0 2 0 3-1 4c-1 4-6 4-10 4l0 0c-5 0-9-2-12-3c-2-1-4-2-5-2c-1 0-1-1-1-1v-21c0 0 0-1 0-1c4-4 6-8 9-11c1-1 2-4 3-6c-1-2 0-6 2-6c2 0 7 1 7 8z"
+      ></path>
+    </template>
+    <!-- -------------------------------------------------------- template laugh -->
+    <template spritemeister id="laugh">
+      <g transform="translate(0 ${ease(8)})">
+        <circle cx="50" cy="45" r="45" fill="lightblue"></circle>
+        <path d="M10 ${50 - ease(2)} a1 ${.5 + ease(.3)} 0 0 0 80 0a3 -.5 0 0 0 -80 0"></path>
+        <path id="eye${framenr}" d="M15 35 a1 ${1 - ease(.5)} 0 0 1 20 0a3 -1 0 0 0 -20 0"></path>
+        <use href="#eye${framenr}" x="50"></use>
+      </g>
+    </template>
+    <!-- -------------------------------------------------------- template heart -->
+    <template spritemeister id="heart" duration="5s">
+      <g transform="${scale(.5,1.05)}">
+        <path
+          d="M89 21C86 14 76 7 64 11A27 27 90 0049 21A27 27 90 0034 11C22 8 13 14 8 21C3 32 5 42 15 56C22 65 32 76 48 86A3 3 90 0051 86C67 75 77 65 84 56C94 43 96 32 89 21Z"
+          fill="red"
+        ></path>
+        <path id="eye${framenr}" d="M15 35 a1 ${1 - ease(.5)} 0 0 1 20 0a3 -1 0 0 0 -20 0"></path>
+        <use href="#eye${framenr}" x="50"></use>
+      </g>
+    </template>
+    <!-- -------------------------------------------------------- template brokenheart -->
+    <template spritemeister id="brokenheart" duration="3s">
+      <g fill="red">
+        <path
+          transform="rotate(${pulse(0,-10)} 47 85)"
+          d="M47 20c0 0 0 0 0 0c-4-5-11-8-18-8c-12 0-22 10-22 22c0 15 14 27 34 46l6 5l0 0l-1-1l3-4l-4-5l5-7l-7-8l9-9l-8-6l8-9l-11-8l6-8z"
+        ></path>
+        <path
+          transform="rotate(${pulse(0,10)} 47 85)"
+          d="M47 20c1-1 1-1 2-2l2-1c4-3 9-5 14-5c12 0 22 10 22 22c0 15-14 27-34 46l-6 5l-1-1l3-4l-4-5l5-7l-7-8l9-9l-8-6l8-9l-11-8l6-8z"
+        ></path>
+      </g>
+      <circle cx="47" cy="85" r="5" fill="none" stroke="blue"></circle>
+      <text y="12">n:${framenr}</text>
+    </template>
+    <!-- -------------------------------------------------------- template bounce -->
+    <template spritemeister id="bounce" duration="1s" steps="24">
+      <ellipse
+        cx="50"
+        cy="${70 - ease(36)}"
+        rx="${ framenr > 11 ? minmax(30,41 - ease(10)) : 30}"
+        ry="${minmax(30,30 - ease(30))}"
+        fill="none"
+        stroke="black"
+        stroke-width="5"
+      ></ellipse>
+      <text y="12">n:${framenr}</text>
+    </template>
+    <!-- -------------------------------------------------------- template write -->
+    <template spritemeister id="write" duration="3s" steps="48">
+      <path d="M${25-pulse(0,15)} 50h10A2 2 0 0 0 ${pulse(60,80)} 50h10" stroke="black" fill="yellow"></path>
+    </template>
+    <!-- -------------------------------------------------------- template write -->
+    <template spritemeister id="mouth" duration="5s">
+      <path
+        d="m10 10h80v80h-80v-80z"
+        stroke="red"
+        stroke-width="${pulse(1,12)}"
+        fill="none"
+        stroke-dasharray="320"
+        stroke-dashoffset="${ease(320)}"
+      ></path>
+    </template>
+    <!-- -------------------------------------------------------- template adjust -->
+    <template spritemeister id="adjust" duration="3s">
+      ${v1=10,v2=90,v3=20,v4=20,v5='black',v6=60,v7='grey',v8='fill=\'green\''}
+      <g stroke="${v5}" stroke-width="4" stroke-linecap="round">
+        <line x1="${v3}" y1="${v1}" x2="${v4}" y2="${v2}"></line>
+        <line x1="${v3+25}" y1="${v1}" x2="${v4+25}" y2="${v2}"></line>
+        <line x1="${v3+50}" y1="${v1}" x2="${v4+50}" y2="${v2}"></line>
+      </g>
+      <rect
+        id="knob"
+        x="10"
+        y="${15+ease(v6)}"
+        width="20"
+        height="10"
+        stroke-width="2"
+        stroke="${v7}"
+        rx="3"
+        ry="3"
+        ${v8}
+      ></rect>
+      <use href="#knob" x="25" y="${-ease(v6)}"></use>
+      <use href="#knob" x="50" y="${framenr > 10 ? -v6 + ease(v6) : -10}"></use>
+    </template>
+    <!-- -------------------------------------------------------- template battery -->
+    <template spritemeister id="battery">
+      <path
+        stroke-width="5"
+        d="m-6 42c0 0-6 0-6 0c0 0 0-8 0-8c0-4-4-8-8-8c0 0-66 0-66 0c-4 0-8 4-8 8c0 0 0 32 0 32c0 4 4 8 8 8c0 0 66 0 66 0c4 0 8-4 8-8c0 0 0-8 0-8c0 0 6 0 6 0c0 0 0-16 0-16z"
+        stroke="black"
+        fill="none"
+      ></path>
+      ${v1=34,v2=64}
+      <g stroke="green" stroke-width="5" stroke-linecap="round">
+        <line x1="15" y1="${v1}" x2="15" y2="${v2}"></line>
+        <line x1="25" y1="${v1}" x2="25" y2="${v2}" opacity="${pulse(0.75,1)}"></line>
+        <line x1="35" y1="${v1}" x2="35" y2="${v2}" opacity="${pulse(0.50,1)}"></line>
+        <line x1="45" y1="${v1}" x2="45" y2="${v2}" opacity="${pulse(0.25,1)}"></line>
+        <line x1="55" y1="${v1}" x2="55" y2="${v2}" opacity="${pulse(0,1)}"></line>
+      </g>
+    </template>
+    <!-- -------------------------------------------------------- template debug -->
+    <template spritemeister id="debug">
+      <path d="M48 8L60 33L88 ${33 + ease(6)}L68 56L73 84L48 71L23 84L28 56L8 37L36 33L48 8" fill="blue"></path>
+      <text y="12">n:${framenr}</text>
+    </template>
+    <!-- -------------------------------------------------------- template pacman -->
+    <template spritemeister id="pacman" duration=".5s" steps="24">
+      <g fill="yellow">
+        <g transform="rotate(${ - ease(45)} 50 50)">
+          <path d="m90 50a1 1 0 0 0 -80 0"></path>
+          <ellipse cx="60" cy="30" rx="${5 + ease(1)}" ry="${5 - ease(2)}" fill="black"></ellipse>
+        </g>
+        <path transform="rotate(${ease(45)} 50 50)" d="m10 50a1 1 0 0 0 80 0"></path>
+      </g>
+      <text y="99">n:${framenr}</text>
+    </template>
+    <!-- -------------------------------------------------------- template ghost -->
+    <template spritemeister id="ghost" duration=".5s" steps="24">
+      <g transform="skewY(${pulse(0,5)})">
+        <path
+          d="m82 ${93 + ease(2)}c${7 - ease(7)}-13 4-44 1-65s-40-55-63-1c${-7 - ease(7)} 22-7 53-3 66l${pulse(7,12)}-11l7 11l8-13l8 13l8-12l8 12l7-12"
+          fill="red"
+        ></path>
+        <g id="eye${framenr}" transform="translate(0 ${0 + ease(7)})">
+          <ellipse
+            cx="${58 + ease(2)}"
+            cy="${30 + ease(1)}"
+            rx="${5 + ease(2)}"
+            ry="${5 - ease(1)}"
+            fill="white"
+          ></ellipse>
+          <ellipse
+            cx="${60 + ease(2)}"
+            cy="${30 + ease(1)}"
+            rx="${1 + ease(1)}"
+            ry="${2 - ease(1)}"
+            fill="black"
+          ></ellipse>
+        </g>
+        <use x="0" y="36" href="#eye${framenr}" transform="rotate(180 50 50)"></use>
+      </g>
+      <text y="12">n:${framenr}</text>
+    </template>
+    <!-- -------------------------------------------------------- template morph -->
+    <template spritemeister id="morph" duration="2s" steps="1">
+      <g>
+        <path
+          d="M8 15
+            L17 15 L30 70 L45 15 
+            L55 15 L70 70 L83 15
+            L92 15 L74 80 L65 80
+            L50 24 L35 80 L26 80 L8 15Z"
+          fill="none"
+          stroke="green"
+        ></path>
+      </g>
+      <g>
+        <path
+          d="M26 16
+            L74 16 L74 23 L74 23
+            L36 23 L36 43 L71 43
+            L71 50 L36 50 L36 72
+            L75 72 L75 80 L27 80 L26 16Z"
+          fill="none"
+          stroke="red"
+        ></path>
+      </g>
+      <path
+        d="M${pulse(8,26)} ${pulse(15,16)}
+            L${pulse(17,74)} ${pulse(15,16)} L${pulse(30,74)} ${pulse(70,23)}L${pulse(45,74)} ${pulse(15,23)}
+            L${pulse(55,36)} ${pulse(15,23)} L${pulse(70,36)} ${pulse(70,43)} L${pulse(83,71)} ${pulse(15,43)}
+            L${pulse(92,71)} ${pulse(15,50)} L${pulse(74,36)} ${pulse(80,50)} L${pulse(65,36)} ${pulse(80,72)}
+            L${pulse(50,75)} ${pulse(24,72)} L${pulse(35,75)} ${pulse(80,80)} L${pulse(26,26)} 80L${pulse(8,26)} ${pulse(15,16)}Z"
+        fill="grey"
+        stroke="blue"
+      ></path>
+    </template>
+    <!-- -------------------------------------------------------- template SPRITE-SOURCE -->
+    <template id="SPRITE-SOURCE">
+      <style>
+        :host {
+          display: inline-block;
+        }
+        textarea {
+          width: var(--editorWidth, 95vw);
+          height: var(--editorEditHeight, var(--editorHeight, 9em));
+          font-size: var(--editorFontSize, 1em);
+          background: var(--editorBackground);
+        }
+      </style>
+      <h3><slot name="title"></slot></h3>
+      <textarea></textarea>
+    </template>
+    <!-- -------------------------------------------------------- template FILM-STRIP -->
+    <template id="SPRITE-FILMSTRIP">
+      <style>
+        :host {
+          --duration: 2s;
+          --steps: 9;
+          --w: 140;
+        }
+        .filmstrip {
+          --size: calc(1px * var(--w));
+          --hbsize: 2px;
+          --border: var(--hbsize) solid black;
+          --coveropacity: 0.9;
+          border: var(--border);
+          width: calc(5 * var(--size));
+        }
+        .holes {
+          background: lightgrey;
+          border-top: calc(5 * var(--hbsize)) dashed black;
+        }
+        .cells {
+          display: grid;
+          border-top: var(--border);
+          border-bottom: var(--border);
+          grid-template-columns: repeat(5, var(--size));
+          overflow: hidden;
+        }
+
+        .cell {
+          width: var(--size);
+          box-sizing: border-box;
+          border-right: var(--border);
+          background: grey;
+          opacity: var(--coveropacity);
+          z-index: 10;
+        }
+
+        .sprite {
+          grid-column: 3;
+          width: var(--size);
+          height: var(--size);
+        }
+
+        .sprite img {
+          height: var(--size);
+          position: relative;
+          left: 0%;
+          animation: moveX var(--duration) steps(var(--steps)) infinite;
+          z-index: 0;
+        }
+
+        @keyframes moveX {
+          to {
+            transform: translate(calc(-1px * var(--steps) * var(--w)));
+            xleft: 100%;
+          }
+        }
+      </style>
+      <div class="filmstrip">
+        <div class="holes"></div>
+        <div class="cells">
+          <div class="cell"></div>
+          <div class="cell"></div>
+          <div class="sprite">
+            <img src="" />
+          </div>
+          <div class="cell"></div>
+          <div class="cell"></div>
+        </div>
+        <div class="holes"></div>
+      </div>
+    </template>
+    <template id="SPRITE-FRAMES">
+      <style>
+        :host {
+          display: block;
+        }
+        #spriteframes {
+          display: grid;
+          grid-template-columns: repeat(var(--steps, 24) 1fr);
+          grid-auto-flow: column;
+          background: lightgrey;
+        }
+        .frame {
+          position: relative;
+          width: 100%;
+          vertical-align: top;
+          position: relative;
+          display: block;
+          width: 100%;
+          height: 0;
+          padding-bottom: 100%;
+        }
+        .frame svg {
+          xwidth: 100%;
+          xheight: 35px;
+        }
+      </style>
+      <div id="spriteframes"></div>
+    </template>
+    <template id="SPRITE-EDITOR">
+      <div>
+        <slot></slot>
+      </div>
+    </template>
+    <style>
+      body {
+        font: 14px Arial;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      ul,
+      p {
+        margin: 0.7em 0;
+      }
+      #sprite1[editor] {
+        --editorHeight: 16em;
+        --editorWidth: 70vw;
+        --editorFontSize: 1.2em;
+        --editorBackground: lightgreen;
+      }
+      sprite-editor {
+        display: block;
+        background: beige;
+        padding: 1em;
+      }
+      sprite-templates {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <section>
+      <h2>
+        SpriteMeister - Working Model - 0.4
+        <p style="color: red; font-weight: bold">
+          One programmable/editable (template literal) frame generates all frames for the sprite
+        </p>
+      </h2>
+    </section>
+    <section>
+      <h3>standard templates:</h3>
+      <sprite-templates></sprite-templates>
+      <h3>your localStorage templates:</h3>
+      Hold ctrl key down to delete your template
+      <br />
+      <sprite-templates user></sprite-templates>
+    </section>
+    <section>
+      <h3>SVG Editor - available functions & variables</h3>
+      <ul>
+        <li>No self-closing tags</li>
+      </ul>
+      <ul>
+        <li><b>framenr</b> - 0+</li>
+        <li><b>steps</b> - total frames</li>
+        <li>v - viewBox width</li>
+        <li>h - viewBox height</li>
+        <li><b>pulse( start , mid , [end=start] )</b> - pulse from start to mid in one cycle - returns value</li>
+        <li><b>scale( start , mid , [end=start] )</b> - scale (from center) - returns matrix string</li>
+        <li>
+          <b>ease( length , [framecount=steps/2] )</b> - ease from 0 to length in [framecount] cycle, and back to 0
+          again - returns value
+        </li>
+        <li><b>minmax( min , max )</b> - use value between min and max - returns value</li>
+        <li>
+          <b>arcpath( [x1,y1 ] , [x2,y2] , [c1x,c1y , c2x,c2y ] )</b> - arc between 2 points with c-control points,
+          c2x,c2y == c1x,c1y when not specified value
+        </li>
+        <li><b>round( value , digits=1 )</b> - round, for smaller output</li>
+      </ul>
+
+      <sprite-editor>
+        <h2>SVG one frame source: (changes are saved in localStorage)</h2>
+        <sprite-source id="sprite1" editor></sprite-source>
+
+        <!-- Display full running sprite -->
+        <sprite-meister
+          id="svgspriter"
+          template="bounce"
+          steps1="48"
+          duration="3s"
+          width="250px"
+          background-color="lightgrey"
+        >
+        </sprite-meister>
+
+        <!-- Display 24 still sprites, mouse over to freeze running sprite -->
+        <h2>24 Sprite frames: (move mouse over frame)</h2>
+        <sprite-frames></sprite-frames>
+
+        <!-- <h2>Filmstrip:</h2>
+          <sprite-filmstrip duration="svgspriter"></sprite-filmstrip> -->
+        <hr />
+        <h2>24 frames expanded to 1 SVG</h2>
+        <!-- Source code for use in IMG tag -->
+        <sprite-source id="srcIMG" title="SVG sprites output # escaped for IMG src">
+          <span slot="title"></span
+        ></sprite-source>
+
+        <!-- source code for use in CSS background -->
+        <sprite-source id="srcCSS" escapedtags title="SVG sprites output # and &lt; > escaped for CSS background"
+          ><span slot="title"></span
+        ></sprite-source>
+      </sprite-editor>
+    </section>
+    <section>
+      <h1>Inspiration</h1>
+      <ul>
+        <li>
+          <a href="https://css-tricks.com/many-tools-shape-morphing/"
+            >https://css-tricks.com/many-tools-shape-morphing/</a
+          >
+        </li>
+        <li>
+          <a href="https://shapeshifter.design/">https://shapeshifter.design/</a>
+        </li>
+      </ul>
+    </section>
+  </body>
+</html>

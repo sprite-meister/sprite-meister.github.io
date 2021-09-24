@@ -1,0 +1,226 @@
+<html>
+  <body>
+    <head>
+      <script src="elements.spriter.js"></script>
+      <script src="element.js"></script>
+      <style>
+        body {
+          --animation-play-state-css: running;
+          font: 14px Arial;
+        }
+
+        [src*="walk-sequence"] {
+          xdisplay: block;
+          animation: movearound 12s steps(69, end) infinite alternate 0s;
+          animation-direction: normal, alternate;
+        }
+
+        @keyframes movearound {
+          0% {
+            transform: translatex(0);
+          }
+
+          100% {
+            xtransform: translatex(100vw);
+          }
+        }
+
+        .earth {
+          width: 64px;
+          height: 64px;
+          background-image: url("./inspiration/earth.png");
+          animation: playX 2s steps(16) infinite, playY 2s steps(16) infinite;
+        }
+
+        @keyframes playX {
+          from {
+            background-position-x: 0px;
+          }
+          to {
+            background-position-x: -1024px;
+          }
+        }
+
+        @keyframes playY {
+          from {
+            background-position-y: 0px;
+          }
+          to {
+            background-position-y: -1024px;
+          }
+        }
+      </style>
+    </head>
+    <h4>&lt;sprite-anmation> Component</h4>
+    <!-- <sprite-animation steps="29" cell="50" src="https://i.imgur.com/qzQkmGm.png"></sprite-animation> -->
+    <sprite-animation
+      steps="15"
+      cell="183x122"
+      duration="1.5s"
+      scale="2"
+      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/5973/muybridge_horse.jpg"
+    ></sprite-animation>
+
+    <sprite-animation
+      steps="8"
+      to="8"
+      cell="101x129"
+      duration="2s,2s"
+      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/4273/walk-sequence.svg"
+    ></sprite-animation>
+
+    <sprite-animation 
+      steps="8" 
+      xcell="184x325" 
+      xduration="1s" 
+      src="https://www.codeandweb.com/o/blog/2014/11/05/animate-sprites-in-css-with-texturepacker/capguy-walk-1472.png"></sprite-animation>
+
+    <!-- <sprite-animation
+      steps="12x4"
+      shift
+      row="3"
+      cell="77x128"
+      duration=".1s"
+      src="https://w7.pngwing.com/pngs/532/478/png-transparent-man-walking-illustrations-sprite-animation-walking-javascript-walk-cycle-sprite-game-film-organization.png"
+    ></sprite-animation> -->
+
+    <sprite-animation
+      steps="5x6"
+      shift
+      xxrow="3"
+      cell="192x192"
+      duration=".1s"
+      src="./spritesheets/magic.png"
+    ></sprite-animation>
+
+    <!-- <sprite-animation src="./spritesheets/manwalking-spriter-12x4-77x128.png"></sprite-animation> -->
+
+    <sprite-animation
+      id="Q1"
+      duration=".2s"
+      src="./spritesheets/earth-spriter-16x16-64x64-wrap-.2s.png"
+    ></sprite-animation>
+
+    <sprite-animation
+    duration=".1s"
+    src="./spritesheets/earth-spriter-16x16-64x64-wrap-.2s.png"></sprite-animation> 
+
+    <sprite-animation
+      steps="16x16"
+      shift
+      row="0"
+      cell="64x64"
+      duration=".1s"
+      src="https://s3.us-east-2.amazonaws.com/singular-assets/Global/Earth1024x1024_256Frames.png"
+    ></sprite-animation>
+
+    <!-- manwalking-sprite-12-4-77-128-1-5s -->
+    <!-- let [columns,rows,width,height,rowloop,duration] = split("-sprite-")[1].split("-"); -->
+    <template id="SPRITE-DIMENSION-GUESS">
+      <button><slot></slot></button>
+    </template>
+    <template id="SPRITE-CONFIGURATOR">
+      <style>
+        :host {
+          contain: layout;
+        }
+        #spritemeister {
+          margin: 2em;
+          position: fixed;
+          top: 0;
+          width: 90vw;
+          height: 90vh;
+          background: lightcoral;
+          --wraprows: 2;
+          --columns: 12;
+          --rows: 4;
+          --duration: 1;
+          --width: 77;
+          --height: 128;
+        }
+        #spritesheetcontainer {
+          position: relative;
+        }
+        #spritesheetplayer {
+          object-fit: contain;
+          --partialrows: calc(var(--rows) / var(--wraprows));
+          --border: 4px solid red;
+          --widthPX: calc(1px * var(--width));
+          --heightPX: calc(1px * var(--height));
+          width: calc(var(--columns) * var(--widthPX));
+          height: calc(var(--rows) * var(--heightPX));
+          background-image: var(--background-url);
+          background-size: cover;
+          position: absolute;
+          top: 0;
+          border: solid 1px black;
+          z-index: 0;
+          display: none;
+        }
+
+        #spritesheetplayer:before,
+        #spritesheetplayer:after {
+          box-sizing: border-box;
+          content: "";
+          position: absolute;
+          left: 0px;
+          top: 0px;
+          border: var(--border);
+        }
+        #spritesheetplayer:before {
+          width: var(--widthPX);
+          height: 100%;
+          animation: spritesheet_playX calc(1s * var(--duration)) steps(var(--columns)) infinite;
+        }
+
+        @keyframes spritesheet_playX {
+          0% {
+            left: 0px;
+          }
+          100% {
+            left: calc(var(--columns) * var(--widthPX));
+          }
+        }
+        #spritesheetplayer:after {
+          width: 100%;
+          height: var(--heightPX);
+          animation: spritesheet_playY calc(1s * var(--partialrows) * var(--duration)) steps(var(--wraprows)) infinite;
+        }
+
+        @keyframes spritesheet_playY {
+          0% {
+            top: 0px;
+          }
+          100% {
+            top: calc(var(--partialrows) * var(--heightPX));
+          }
+        }
+        #data {
+          background: lightgreen;
+          display: grid;
+          grid-template-columns: 1fr 1fr 4fr;
+          gap: 5px;
+        }
+        #spritesheet {
+          z-index: 2;
+          object-fit: contain;
+          position: absolute;
+          top: 0;
+        }
+      </style>
+      <div id="spritemeister">
+        <h2>Sprite Meister</h2>
+        <div id="data"></div>
+        <div id="spritesheetcontainer">
+          <img id="spritesheet" src="" onload="this.getRootNode().host.imgloaded(this)" />
+          <div id="spritesheetplayer"></div>
+        </div>
+      </div>
+    </template>
+
+    <!-- <div class="earth"></div> -->
+    <!-- <sprite-animation steps="16x16" cell="64" src="./inspiration/earth.png"></sprite-animation> -->
+
+    <!-- <sprite-configurator></sprite-configurator> -->
+  </body>
+</html>
