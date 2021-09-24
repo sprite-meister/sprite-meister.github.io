@@ -314,7 +314,7 @@ customElements.define(
     constructor() {
       super({ template: false, shadow: true }).respond((evt) => {
         //! respond to editor changes
-        //! sprite-meisters in sprite-templates don't respond
+        //! sprite-meisters in sprite-templates must not respond
         if (!this.hasAttribute("templatename")) {
           if (evt.detail.hasOwnProperty("framenr")) {
             this.freeze(evt.detail.framenr);
@@ -367,6 +367,7 @@ customElements.define(
     // =================================================================== svg spriter - render
     render(frame) {
       let parseStringLiteral = (str, v = {}) => {
+        console.log("parseStringLiteral",{str:[str]},v);
         try {
           return new Function("v", "return((" + Object.keys(v).join(",") + ")=>`" + str + "`)(...Object.values(v))")(v);
         } catch (e) {
@@ -454,7 +455,7 @@ customElements.define(
             let frameinfo = {
               extra: "",
             };
-            frameinfo.svg = parseStringLiteral(frame, {
+            frameinfo.svg = parseStringLiteral((frame||this.innerHTML), {
               framenr,
               w: this.vbwidth,
               h: this.vbheight,

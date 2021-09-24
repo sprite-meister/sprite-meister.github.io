@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>SpriteMeister Documentation</title>
+    <script src="console.js"></script>
+    <script src="element.js"></script>
+  </head>
+  <body>
+    <sprite-meister id="bounce" duration="1s" steps="24" style="width:300px;height:300px">
+        <ellipse
+          cx="50"
+          cy="${70 - ease(36)}"
+          rx="${ framenr > 11 ? minmax(30,41 - ease(10)) : 30}"
+          ry="${minmax(30,30 - ease(30))}"
+          fill="none"
+          stroke="black"
+          stroke-width="5"
+        ></ellipse>
+        <text y="12">n:${framenr}</text>
+  </sprite-meister>
+  </body>
+  </html>
