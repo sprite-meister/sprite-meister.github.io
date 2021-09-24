@@ -186,7 +186,8 @@ customElements.define(
             "auto calculated cells:",
             cellcount,
             "cells ",
-            naturalWidth / cellcount,"px width",
+            naturalWidth / cellcount,
+            "px width",
             "from IMG width:",
             naturalWidth
           );
@@ -325,10 +326,14 @@ customElements.define(
     }
     // =================================================================== svg spriter - connectedCallback
     connectedCallback() {
+      let templateString = "";
       let templateid = this.getAttribute("template");
-      this.template = document.querySelector(`template#${templateid}`) || console.error("missing template");
-      this.templatecontent = this.template.innerHTML.replace(/"/g, "'");
-      this.render(this.templatecontent);
+      if (templateid) {
+        this.template = document.querySelector(`template#${templateid}`) || console.error("missing template",templateid);
+        templateString = this.template.innerHTML;
+      }
+      templateString = templateString.replace(/"/g, "'");
+      this.render(templateString);
       if (this.hasAttribute("templatename")) {
         this.onclick = (evt) => {
           if (this.hasAttribute("usertemplate")) {
@@ -354,7 +359,7 @@ customElements.define(
           this.dispatch({
             to: "SPRITE-MEISTER",
             templateid,
-            framedefinition: this.templatecontent,
+            framedefinition: templateString,
           });
         };
       }
@@ -408,7 +413,8 @@ customElements.define(
       let circle = (p, radius = 2, color = "red") =>
         `<circle cx='${p[0]}' cy='${p[1]}' r='${radius}' fill='${color}'></circle>`;
       setTimeout(() => {
-        let attr = (x, defaultValue) => this.getAttribute(x) || (this.template && this.template.getAttribute(x)) || defaultValue;
+        let attr = (x, defaultValue) =>
+          this.getAttribute(x) || (this.template && this.template.getAttribute(x)) || defaultValue;
         this.steps = ~~attr("steps", 10);
         this.setProperty("steps", this.steps - 1);
         this.vbwidth = ~~attr("w", 100);
