@@ -137,7 +137,7 @@ customElements.define(
         }
       });
     } // constructor
-    mouse(framenr, svgelement) {
+    set_framenr(framenr, svgelement) {
       // dispatch SPRITE-MEISTER framenr
       this.dispatch({ to: "SPRITE-MEISTER", framenr });
     }
@@ -147,18 +147,23 @@ customElements.define(
         let svg = (sprite, framenr, frame) => {
           let viewBox = `viewBox='0 0 ${sprite.vbwidth} ${sprite.vbheight}'`;
           let svghtml = `<svg xmlns='http://www.w3.org/2000/svg' ${viewBox}>${frame}</svg>`;
-          var oParser = new DOMParser();
-          var doc = oParser.parseFromString(svg, "image/svg+xml");
-          var failed = doc.documentElement.nodeName.indexOf("parsererror") > -1;
-          if (failed) {
-            console.error("failed to load the doc : " + doc.documentElement.nodeName);
-          }
-          //svghtml = `<sprite-meister id="" template="battery" freeze="${framenr}" steps="24" duration="3s" background-color="lightcoral"></sprite-meister>`;
-          //svghtml = framenr;
+
+          //! Where did this code come from?
+          //! validates SVG but produces XML errors in FireFox
+          // let testSVG = true;
+          // if (testSVG) {
+          //   var oParser = new DOMParser();
+          //   var doc = oParser.parseFromString(svghtml, "image/svg+xml");
+          //   var failed = doc.documentElement.nodeName.indexOf("parsererror") > -1;
+          //   if (failed) {
+          //     console.error("failed to load the doc : " + doc.documentElement.nodeName);
+          //   }
+          // }
+
           return (
             `<div class='frame'` +
-            ` onmouseenter='this.getRootNode().host.mouse(${framenr})'` +
-            ` onmouseleave='this.getRootNode().host.mouse(-1)'>${svghtml}</div>`
+            ` onmouseenter='this.getRootNode().host.set_framenr(${framenr})'` +
+            ` onmouseleave='this.getRootNode().host.set_framenr(-1)'>${svghtml}</div>`
           );
         };
         console.log(svg.length);
@@ -171,6 +176,19 @@ customElements.define(
       } catch (e) {
         console.error(`render error:`, [this], e);
       }
+    }
+  }
+);
+// *********************************************************************************** define sprite-editor
+customElements.define(
+  "sprite-editor",
+  class extends SpriteMeister {
+    constructor() {
+      super({ template: false, shadow: false });
+      this.shadowRoot.innerHTML = "<slot></slot>";
+    }
+    set_duration(duration, svgelement) {
+      this.dispatch({ to: "SPRITE-MEISTER", duration });
     }
   }
 );
