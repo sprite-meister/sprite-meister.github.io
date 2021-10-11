@@ -10,6 +10,13 @@ SpriteMeister Web Component configures and plays image/SVG sprite sheets in CSS 
 
 ![](https://i.pinimg.com/originals/0d/c9/68/0dc968448592a7d533096b74c263cc40.gif)
 
+
+# Must read SVG animation articles
+
+* https://betterprogramming.pub/did-you-know-you-could-animate-an-svg-like-this-f606528bf06a
+
+
+
 # Resources
 
 * https://www.androiddesignpatterns.com/2016/11/introduction-to-icon-animation-techniques.html

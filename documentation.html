@@ -5,17 +5,81 @@
     <script src="element.js"></script>
   </head>
   <body>
-    <sprite-meister id="bounce" duration="1s" steps="24" style="width:300px;height:300px">
-        <ellipse
-          cx="50"
-          cy="${70 - ease(36)}"
-          rx="${ framenr > 11 ? minmax(30,41 - ease(10)) : 30}"
-          ry="${minmax(30,30 - ease(30))}"
-          fill="none"
-          stroke="black"
-          stroke-width="5"
-        ></ellipse>
-        <text y="12">n:${framenr}</text>
-  </sprite-meister>
+    <!-- <sprite-meister id="bounce" duration="1s" steps="24" w="300" width="400px" height="100px" a1="blue">
+      ${setv1(minmax({value:0,min:41 - ease({distance:10})}))}
+      ${setv2(ease({distance:35,frames:framecount/2}))}
+      <ellipse
+        cx="50"
+        cy="${70 - v2}"
+        rx="${ framenr > 11 ? v1 : 30}"
+        ry="30"
+        fill="none"
+        stroke="${a1}"
+        stroke-width="10"
+      ></ellipse>
+      <text y="12">${v2} Frame n:${n} of ${framecount}</text>
+    </sprite-meister> -->
+
+    
+    <hr />
+    <sprite-meister id="circle" duration="1s" paths>
+      ${setv2(circlepath({radius1:25}))}
+      <circle cx="${v2.x}" cy="${v2.y}" r="5"></circle>
+      <text y="12" font-size="10px">${v2.x} ${framecount}</text>
+    </sprite-meister>
+    <hr />
+    <sprite-meister id="arcs" duration="2s" paths cell="250x250">
+      ${setv1(arcpath({start:[15,70],end:[75,70],control:[20,-20],c2:[50,20,40,150]}))}
+      <circle cx="${v1.x}" cy="${v1.y}" r="5"></circle>
+      <text y="12" font-size="10px">${framenr} x:${v1.x} y:${v1.y} ${w}</text>
+    </sprite-meister>
+
+    <!-- <sprite-meister id="SVGlogo" duration="1s" paths steps="1" h="300" w="300">
+      <g stroke="#000" stroke-width="38">
+        <g id="b" transform="rotate(35 150 150) translate(150 150)">
+          <path id="a" fill="#ffb13b" d="m-84-16a22 22 0 100 32h168a22 22 0 100-32z" />
+          <use x="0" href="#a" transform="rotate(45)" />
+          <use href="#a" transform="rotate(90)" />
+          <use href="#a" transform="rotate(135)" />
+        </g>
+      </g>
+      <use href="#b" />
+      <path opacity=".6" fill="#000" d="M9 150h283v100c0 24-18 42-42 42H50c-23 0-41-18-41-42Z" />
+      <path
+        fill="white"
+        d="M5 31A18 18 0 0 1 18 0c11 0 19 8 19 18H26a8 8 0 1 0-13 6l5 2c6 0 10 2 13 5a18 18 0 0 1-13 32C8 63 0 54 0 44h11a8 8 0 1 0 13-5l-6-2c-4-1-9-2-13-6ZM73 0 60 63H50L37 0h11l7 37 8-37h10ZM92 26h18v18a18 18 0 0 1-37 0V18a18 18 0 0 1 37 0H99a8 8 0 0 0-15 0v26a8 8 0 0 0 15 0v-7h-7V26Z"
+        transform="matrix(2 0 0 2 40 158)"
+      />
+    </sprite-meister> -->
+
+
+    <!-- <sprite-meister spritemeister id="hamarrow2" duration="4s">
+      <g stroke="lightcoral" stroke-width="8" stroke-linecap="round">
+        <path d="M15 30L85 30"></path>
+        <path d="M15 50L85 50"></path>
+        <path d="M85 70L15 70"></path>
+      </g>
+      <g stroke="green" stroke-width="8" stroke-linecap="round">
+        <path d="M50 70L20 50"></path>
+        <path d="M75 50L20 50"></path>
+        <path d="M50 30L20 50"></path>
+      </g>
+      ${setv1(arcpath({start:[15,30],end:[50,30],control:[40,15],color:3}))}
+      ${setv2(arcpath({start:[85,30],end:[20,50],control:[85,60,20,80],color:4}))}
+      ${setv3(arcpath({start:[15,50],end:[75,50],control:[50,20],color:1}))}
+      ${setv4(arcpath({start:[85,50],end:[20,50],control:[50,70],color:2}))}
+      ${setv5(arcpath({start:[85,70],end:[20,50],control:[30,90],color:5}))}
+      ${setv6(arcpath({start:[15,70],end:[50,70],control:[40,40],color:6}))}
+      <g stroke="black" stroke-width="8" stroke-linecap="round">
+        <path d="M${v1.x} ${v1.y}L${v2.x} ${v2.y}"></path>
+        <path d="M${v3.x} ${v3.y}L${v4.x} ${v4.y}"></path>
+        <path d="M${v5.x} ${v5.y}L${v6.x} ${v6.y}"></path>
+      </g>
+    </sprite-meister> -->
+
+
+<!-- 
+    <sprite-animation src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/57786/dog-walk.svg" steps="1x9" duration=".05s" background="magenta">
+    </sprite-animation> -->
   </body>
-  </html>
+</html>
