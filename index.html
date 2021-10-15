@@ -6,11 +6,13 @@
     <script src="element.js"></script>
     <!-- -------------------------------------------------------- template hamarrow1 -->
     <template spritemeister id="hamburger_arrow1" duration="4s">
-      ${setv1(round({value:40-ease({distance:25})})) , setv2(50) , setv3(ease({distance:20}))}
+      ${ setv1( round({value:40-ease({distance:25})}) , "top and bottom X position" ) , 
+         setv2( ease({distance:20}) , "top and bottom line to Y=50" )
+      }
       <g stroke="black" stroke-width="8" stroke-linecap="round" transform="${rotate(180-ease({distance:180}))}">
-        <path d="M${v1} 30L85 ${v2 - v3}"></path>
+        <path d="M${v1} 30L85 ${50 - v2}"></path>
         <path d="M15 50L85 50"></path>
-        <path d="M${v1} 70L85 ${v2 + v3}"></path>
+        <path d="M${v1} 70L85 ${50 + v2}"></path>
       </g>
     </template>
     <!-- -------------------------------------------------------- template hamarrow2 -->
@@ -85,7 +87,16 @@
     </template>
     <!-- -------------------------------------------------------- template adjust -->
     <template spritemeister id="adjust" duration="3s">
-      ${v1=10,v2=90,v3=20,v4=20,v5='black',v6=60,v7='grey',v8='fill=\'green\''}
+      ${
+        v1=10,
+        v2=90,
+        v3=20,
+        v4=20,
+        v5='black',
+        v6=60,
+        v7='grey',
+        v8='fill=\'green\''
+      }
       <g stroke="${v5}" stroke-width="4" stroke-linecap="round">
         <line x1="${v3}" y1="${v1}" x2="${v4}" y2="${v2}"></line>
         <line x1="${v3+25}" y1="${v1}" x2="${v4+25}" y2="${v2}"></line>
@@ -114,7 +125,7 @@
         stroke="black"
         fill="none"
       ></path>
-      ${v1=34,v2=64}
+      ${ setv1( 34 ) , setv2( 64 ) }
       <g stroke="green" stroke-width="5" stroke-linecap="round">
         <line x1="15" y1="${v1}" x2="15" y2="${v2}"></line>
         <line x1="25" y1="${v1}" x2="25" y2="${v2}" opacity="${pulse({start:0.75,mid:1})}"></line>
@@ -125,7 +136,9 @@
     </template>
     <!-- -------------------------------------------------------- template pacman -->
     <template spritemeister id="pacman" duration=".5s" steps="24">
-      ${v1=pulse({mid:45})} ${v2=ease({distance:1})}
+      ${ setv1( pulse({mid:45})     ,"rotation"  ),  
+         setv2( ease({distance:1})  ,"squint eye")
+      }
       <g fill="yellow">
         <g transform="rotate(${ -v1 } 50 50)">
           <path d="m90 50a1 1 0 0 0 -80 0"></path>
@@ -136,12 +149,13 @@
       <text y="99">n:${framenr}</text>
     </template>
     <!-- -------------------------------------------------------- template ghost -->
-    <template spritemeister id="ghost" duration=".5s" steps="24" ghostcolor="hotpink" bounce="5">
-      ${setv1(ease({distance:1}),"squeeze eyes")} 
-      ${setv2(ease({distance:1*attr("bounce")}),"bounce eyes")} 
-      ${setv3(pulse({mid:1*attr("bounce")}),"bounce ghost")} 
-      ${setv4(pulse({start:5,mid:10}),"wiggle skirt")} 
-      ${setv7(ease({distance:10}),"curve cloak")}
+    <template spritemeister id="ghost" duration=".5s" steps="24" ghostcolor="hotpink">
+      ${ setv1( ease({distance:1})                ,"squeeze eyes" ), 
+         setv2( ease({distance:1})                ,"bounce eyes"  ),
+         setv3( pulse({mid:1})                    ,"bounce ghost" ), 
+         setv4( pulse({start:5,mid:10})           ,"wiggle skirt" ), 
+         setv7( ease({distance:10})               ,"curve cloak"  )
+      }
       <g transform="skewY(${v3})">
         <path fill="${attr('ghostcolor','red')}"
           d="M82 94 c${7 - v7}-13 4-44 1-65s-40-55-63-1 c${-7 - v7} 22-7 53-3 66
@@ -345,7 +359,7 @@
       </ul>
 
       <sprite-editor>
-        <h2>SVG one frame source: (changes are saved in localStorage)</h2>
+        <h2><span>Sprite Editor</span> - SVG one frame source: (changes are saved in localStorage)</h2>
         <div>
           Steps:
           <input
@@ -357,7 +371,7 @@
             style="width: 4em"
             onchange="this.closest('sprite-editor').set_steps(this.value)"
           />
-          frames (hardcoded)
+          frames (hardcoded in this online creator)
         </div>
         <div>
           Duration:
@@ -379,22 +393,11 @@
               text-align: right;
             }
           </style>
-          viewBox = "<view-box id="X"></view-box><view-box id="Y"></view-box><view-box id="H"></view-box
-          ><view-box id="W"></view-box>"
-          <script>
-            customElements.define(
-              "view-box",
-              class extends HTMLElement {
-                connectedCallback() {
-                  this.innerHTML = `<input type="text" value="0" id="viewBox${this.getAttribute("id")}">`;
-                }
-              }
-            );
-          </script>
+          hardcoded 100x100 viewBox! You can set a custom viewBox with &ltsprite-meister cell="..x..">
         </div>
         <sprite-source id="sprite1" editor></sprite-source>
 
-        <!-- Display full running sprite -->
+        <!-- Display full running sprite User is editting -->
         <sprite-meister
           id="svgspriter"
           template="bounce"

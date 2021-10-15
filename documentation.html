@@ -22,14 +22,15 @@
 
     
     <hr />
-    <sprite-meister id="circle" duration="1s" paths>
+    <sprite-meister id="circle" duration="1s" paths width="100px" playstate="paused">
       ${setv2(circlepath({radius1:25}))}
       <circle cx="${v2.x}" cy="${v2.y}" r="5"></circle>
-      <text y="12" font-size="10px">${v2.x} ${framecount}</text>
+      <text y="12" font-size="10px">${v2.x} ${cx}</text>
     </sprite-meister>
+
     <hr />
-    <sprite-meister id="arcs" duration="2s" paths cell="250x250">
-      ${setv1(arcpath({start:[15,70],end:[75,70],control:[20,-20],c2:[50,20,40,150]}))}
+    <sprite-meister id="arcs" duration="2s" paths cell="250x250" background-color="pink">
+      ${setv1(arcpath({start:[15,70],end:[175,170],control:[20,-20],c2:[50,20,40,150]}))}
       <circle cx="${v1.x}" cy="${v1.y}" r="5"></circle>
       <text y="12" font-size="10px">${framenr} x:${v1.x} y:${v1.y} ${w}</text>
     </sprite-meister>

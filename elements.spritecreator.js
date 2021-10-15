@@ -10,15 +10,6 @@ class SpriteMeister extends MeisterElement {
     super().attachShadow({
       mode: "open",
     });
-    document.body.addEventListener("qomponents", () =>
-      this.dispatchEvent(
-        new CustomEvent("qomponent", {
-          bubbles: true,
-          composed: true,
-          detail: this,
-        })
-      )
-    );
   }
   appendTemplate() {
     let template = document.getElementById(this.nodeName);
@@ -92,7 +83,7 @@ class SpriteMeister extends MeisterElement {
     if (typeof func == "function") {
       root.addEventListener(name, (evt) => {
         console.log(
-          `${this.nodeName} %c reponds to event from %c ${evt.target.nodeName} :blue;color=white`,
+          `${this.nodeName} %c responds to event from %c ${evt.target.nodeName} :royalblue;color=white`,
           "background:green;color:white",
           "background:orange"
         );
@@ -216,7 +207,7 @@ customElements.define(
         try {
           store = JSON.parse(store);
         } catch (e) {
-          console.error(666, e);
+          console.error(`${this.id} restoreTemplates error:`, e);
         }
         Object.keys(store).map((id) => this.appendBodySpriteTemplate(id, store[id]));
       }
@@ -331,7 +322,6 @@ customElements.define(
         this.listen({
           name: "sprite-meister",
           do: (evt) => {
-            console.log(666);
             this.processTextarea_setHeight(evt);
 
             if (evt.detail.framedefinition) {
@@ -343,7 +333,7 @@ customElements.define(
           name: "save-sprite",
           do: (evt) => {},
         });
-      } else {
+      } else { // this element is not the editor
         this.listen((evt) => {
           let sprite = evt.detail.sprite;
           if (evt.detail.sprite) {
@@ -385,7 +375,6 @@ customElements.define(
           console.log("save user template value", event.detail.templateid);
           this.templateid = event.detail.templateid;
         }
-        //666
         // if user template then update that template
         // saver will then save all user templates in the page
         // that way we can add user templates by default in index.html
@@ -395,7 +384,7 @@ customElements.define(
     save() {
       console.log(`Save sprite:red;color=white`, this.id, this.templateid);
       localStorage.setItem(this.id, this.value);
-      //save all user templates//666
+      //save all user templates
       this.dispatch(
         {},
         {

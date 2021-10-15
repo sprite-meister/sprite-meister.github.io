@@ -8,10 +8,46 @@ const __ANIMATION_METHOD_IMG__ = 0;
 const __ANIMATION_METHOD_CSS__ = 1;
 const __ANIMATION_METHOD_BOTH__ = 2;
 
+//
+const UnitFromString = (x) => {
+  let value = StringToNumber_OptionalWithUnit(x);
+  return x.replace(String(value), "");
+};
+const StringToNumber_OptionalWithUnit = (
+  x, // "100px"
+  forceUnit = false // "px" or "%"
+) => {
+  let s = String(x);
+  if (s.includes("px")) {
+    s = s.replace("px", "");
+  } else {
+    s = s.replace("%", "");
+  }
+  if (forceUnit) {
+    return s + forceUnit;
+  } else {
+    return Number(s);
+  }
+};
+
 // *********************************************************************************** define
 class SpriteBaseClass extends HTMLElement {
   log(label, ...args) {
     console.log(`%c <${this.localName}> ${label}`, `background:green;color:white`, ...args);
+  }
+  // ================================================================- sprite animation - observedAttributes
+  copyAttributesFrom(
+    el,
+    excludeAttributes = [], // user provided excluded attribute strings
+    excludeAllAttributes = [...excludeAttributes, "spritemeister"]
+  ) {
+    let attrs = el.attributes || [];
+    for (var i = attrs.length; i > 0; i--) {
+      let { name, value } = attrs[i - 1];
+      if (!excludeAllAttributes.includes(name)) {
+        this.setAttribute(name, value);
+      }
+    }
   }
   // ================================================================- sprite animation - observedAttributes
   static get observedAttributes() {
@@ -29,15 +65,25 @@ class SpriteBaseClass extends HTMLElement {
       "to",
       "strip",
       "iteration",
+      "paths", // when set displays dotted paths in SVG where each frame does a calculation
     ];
   }
   // =================================================================== SpriteBaseClass attributeChangedCallback
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name == "duration") {
-      this.log(`attributeChangedCallback ${name}`, oldValue, newValue);
-      this.setProperty("anim_duration", newValue);
-    } else if (name == "cell") {
-      //!! render sprite again set background-size?
+    switch (name) {
+      case "src":
+        break;
+      case "duration":
+      case "playstate":
+        this.log(`attributeChangedCallback ${name}`, oldValue, newValue);
+        this.setProperty("anim" + name, newValue);
+        break;
+      case "width":
+      case "cell":
+      case "paths":
+        //!! render sprite again set background-size?
+        this.render();
+        break;
     }
   }
   // =================================================================== SpriteBaseClass constructor
@@ -177,15 +223,15 @@ customElements.define(
       );
       ["start", "iteration", "end"].map((name) => {
         this.shadowRoot.addEventListener("animation" + name, (evt) => {
-          //console.warn(this.steps,name);
           if (name == "iteration") {
             if (this.hasAttribute("shift")) {
+              this.log(`shift animation cells`);
               let row = ~~this.row;
               let rows = ~~this.steps.split("x")[1];
               if (row == rows - 1) row = 0;
               else row++;
-              //this.setAttribute("row",row);
-              //this.render();
+              this.setAttribute("row", row);
+              this.render();
             }
           }
         });
@@ -269,7 +315,7 @@ customElements.define(
         `div img{` +
         `width:${naturalWidth}px;` +
         `animation:${animation};` +
-        `animation-play-state:${this.playstate};` +
+        `animation-play-state:var(--animplaystate,${this.playstate});` +
         `}` +
         `@keyframes IMGanimationX{` +
         `from{transform: translateX(0px)}` +
@@ -288,7 +334,7 @@ customElements.define(
         `background-image:url("${this.src}");` +
         `background-size:${this.steps.split("x")[1] ? "-1px" : "cover"};` +
         `animation:${animation};` +
-        `animation-play-state:var(--animation-play-state-css,${this.playstate});`;
+        `animation-play-state:var(--animplaystate,${this.playstate});`;
       css_keyframes =
         `@keyframes CSSanimationX{` +
         `from{background-position-x: var(--frompx)}` +
@@ -367,8 +413,9 @@ customElements.define(
             //! sprite-meisters in sprite-templates must not respond
           } else {
             //! respond to editor changes
+            this.log(`respond on evt.detail:`, evt.detail);
             if (evt.detail.hasOwnProperty("framenr")) this.freeze(evt.detail.framenr);
-            if (evt.detail.hasOwnProperty("framedefition")) this.render(evt.detail.framedefinition);
+            if (evt.detail.hasOwnProperty("framedefinition")) this.render(evt.detail.framedefinition);
             if (evt.detail.hasOwnProperty("duration")) this.setAttribute("duration", evt.detail.duration + "s");
           }
         });
@@ -405,7 +452,10 @@ customElements.define(
               this.remove();
             }
           } else {
-            this.templateid = "user_" + this.templateid + "_" + new Date() / 1; //666
+            //assign all attributes from template to this element
+            this.copyAttributesFrom(this.template);
+            // id was copied too, overwrite it with templateid
+            this.templateid = "user_" + this.templateid + "_" + new Date() / 1;
             document
               .querySelector("sprite-templates[user]")
               .appendBodySpriteTemplate(this.templateid, this.template.innerHTML);
@@ -488,8 +538,11 @@ customElements.define(
         this.setProperty("steps", this.steps - 1);
         this.vbwidth = ~~attr("w", __DEFAULT_VIEWBOX_WIDTH__);
         this.vbheight = ~~attr("h", this.vbwidth);
+
+        //!! refactor so by default the sprite is 100% of the container
         this.width = attr("width", "100px");
         this.heigth = attr("height") || this.width;
+
         this.duration = attr("duration", __DEFAULT_SPRITE_DURATION__);
         this.iteration = attr("iteration", "infinite");
         this.log(
@@ -514,8 +567,9 @@ customElements.define(
           // width: this.width, //! there is no DOM width height yet!
           // height: this.height, //! there is no DOM width height yet!
           framecount: this.steps,
-          cx: this.width / 2,
-          cy: this.height / 2,
+          // convert "100px" to "50px"
+          cx: StringToNumber_OptionalWithUnit(this.width) / 2 + UnitFromString(this.width),
+          cy: StringToNumber_OptionalWithUnit(this.heigth) / 2 + UnitFromString(this.heigth),
           q0, // start framenr
           q1, // q1 framenr (steps/4)
           q2, // q2 framenr (steps/2)
@@ -565,7 +619,7 @@ customElements.define(
                 if (this.getAttribute(x)) return this.getAttribute(x);
                 else if (this.template && this.template.getAttribute(x)) return this.template.getAttribute(x);
                 else if (defaultValue) return defaultValue;
-                else console.error(`Missing attribute ${framenr} "${x}"`, this);
+                else console.error(`Missing attribute "${x}" in id="${this.id}"`);
               },
               // FUNC: doc - documentation in template string
               doc: (x) => "",
@@ -704,16 +758,18 @@ customElements.define(
           //!! default style
           `<style>` +
           `div{` +
-          `display:inline-flex;width:${this.width};` +
+          `display:inline-flex;` +
+          `width:${this.width};` +
           `background-image:url("${this.escapedSVG(true)}");` +
           `background-size:auto ${this.width};` +
+          `background-repeat:no-repeat;` +
           `}` +
           `div::before{content:"";padding-top:100%}}` +
           `</style>` +
           //!! style declare animation
           `<style id="anim" onload="this.disabled=false">` +
           `div{` +
-          `background-color:${this.getAttribute("background-color")};` + //! null value does add a background color
+          `background-color:${this.getAttribute("background-color") || "transparent"};` +
           `animation:` +
           /* animation-name               */ ` var(--anim_name, moveX)` +
           /* animation-duration           */ ` var(--anim_duration, ${this.duration})` +
@@ -727,6 +783,7 @@ customElements.define(
           `}` +
           `@keyframes moveX{` +
           `to{` +
+          //!first draft was all calculating PXels, this probably doesn't work for % percentages
           `background-position:${-(this.steps - 1) * this.width.replace("px", "") + "px"};` +
           `}` +
           `}` +
