@@ -179,7 +179,9 @@ https://github.com/sprite-meister/sprite-meister.github.io
 * The SVG is 1 frame high, so Y plane percentages are fine
 * ...
 
-Minimal documentation in [documentation.html](https://spritemeister.github.io/documentation.html) I told you, it is a Working Model v.042
+Minimal documentation in [documentation.html](https://sprite-meister.github.io/documentation.html) 
+
+I told you, it is a Working Model v.042
 
 
 
