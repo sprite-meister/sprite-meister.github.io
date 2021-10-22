@@ -1,14 +1,14 @@
 ---
 title: Create SVG Spritesheet animations with 1 Template Literal String
-published: false
+published: true
 description: One Template Literal String creates the whole SVG Spritesheet Client-Side
-tags: 
-//cover_image: https://direct_url_to_image.jpg
+tags: WebComponents,WebDev,svg,JavaScript
+cover_image: https://sprite-meister.github.io/spritesheets/muybridge_horse.jpg
 ---
 
 # Disclaimer:
 
-The Online **SpriteMeister Generator**: https://SpriteMeister.github.io
+The Online **SpriteMeister Generator**: [https://Sprite-Meister.github.io](https://Sprite-Meister.github.io)
 is a Working Model v.042 - not intended for Production use. (but you can)
 
 ## Only an idiot creates yet another animation tool
@@ -52,7 +52,7 @@ Creating a _Sprite Sheet_ Animation:
 
 # But why stop there?
 
-* SVG images can be animated, 
+* SVG images can animated sprite-sheets, 
 * and SVG can be created _**client-side**_
 as I have done with [Playingcards](https://cardmeister.github.io), [Chesspieces](https://chessmeister.github.io), [Flags](https://flagmeister.github.ui), [Icons](https://iconmeister.github.io) and [Pie-charts](https://dev.to/dannyengelman/what-web-technologies-are-required-to-draw-a-pie-chart-in-2021-spoiler-alert-a-standard-web-component-will-do-1j56))
 
@@ -63,7 +63,7 @@ as I have done with [Playingcards](https://cardmeister.github.io), [Chesspieces]
 
 <sprite-meister duration="4s">
     ${ setv1( 40-ease({distance:25}) , "top and bottom X position" ) , 
-        setv2( ease({distance:20})    , "top and bottom line to Y=50" )
+       setv2( ease({distance:20})    , "top and bottom line to Y=50" )
     }
     <g stroke="black" stroke-width="8" stroke-linecap="round" transform="${rotate(180-ease({distance:180}))}">
         <path d="M${v1} 30L85 ${50 - v2}"></path>
@@ -135,7 +135,7 @@ as I have done with [Playingcards](https://cardmeister.github.io), [Chesspieces]
 
 # It works for me
 
-The Online **SpriteMeister Generator**: https://SpriteMeister.github.io
+The Online **SpriteMeister Generator**: https://Sprite-Meister.github.io
 
 helped me create the spite-sheet animations I needed.
 
