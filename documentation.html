@@ -3,6 +3,18 @@
     <title>SpriteMeister Documentation</title>
     <script src="console.js"></script>
     <script src="element.js"></script>
+    <style>
+      body {
+        font: 16px Arial;
+      }
+      h3 {
+        border-top: 1px solid grey;
+        padding-top: 1em;
+      }
+      sprite-meister {
+        margin-left: 5em;
+      }
+    </style>
   </head>
   <body>
     <!-- <sprite-meister id="bounce" duration="1s" steps="24" w="300" width="400px" height="100px" a1="blue">
@@ -19,20 +31,68 @@
       ></ellipse>
       <text y="12">${v2} Frame n:${n} of ${framecount}</text>
     </sprite-meister> -->
+    <h1>SpriteMeister Documentation (of the important parts)</h1>
+    <h2>SpriteMeister attributes</h2>
+    <ul>
+      <li>duration : duration for all frames, in seconds notation</li>
+      <li>paths : show colored points for every frame calculation</li>
+      <li>width : set width, other than 100px default width</li>
+      <li>cell : define SVG viewBox size</li>
+      <li>background-color : set background-color</li>
+    </ul>
+    <h2>SpriteMeister variables</h2>
+    <ul>
+      <li>n : framenumber</li>
+      <li>w : current sprite width</li>
+      <li>h : current sprite height</li>
+    </ul>
+    <h2>SpriteMeister functions</h2>
+    Can be used inside Template Literals Strings to calculate values for each frame.
+    <h3>attr( name , defaultValue ) - Returns attribute value from <code>&ltsprite-meister></code> or template</h3>
+    <h3>round({ value, precision = 0 }) - Returns rounded value by precision</h3>
 
-    
-    <hr />
-    <sprite-meister id="circle" duration="1s" paths width="100px" playstate="paused">
-      ${setv2(circlepath({radius1:25}))}
-      <circle cx="${v2.x}" cy="${v2.y}" r="5"></circle>
-      <text y="12" font-size="10px">${v2.x} ${cx}</text>
+    <h3>pulse: ({ start:10, mid:50, [end = start] }) - Returns a value on a linear path, to end and back to start</h3>
+    <sprite-meister id="pulse" duration="10s" paths width="200px" playstate="paused" background-color="beige">
+      ${setv1(pulse({start:10,mid:80}),"pulse from start to end ")}
+      <text x="5" y="${v1}" font-size="10px">frame:${n} v1:${v1} </text>
+      <circle cx="${90}" cy="${v1}" r="5"></circle>
     </sprite-meister>
 
-    <hr />
-    <sprite-meister id="arcs" duration="2s" paths cell="250x250" background-color="pink">
-      ${setv1(arcpath({start:[15,70],end:[175,170],control:[20,-20],c2:[50,20,40,150]}))}
+    <h3>
+      ease: ({ distance, [frames = this.steps / 2], [delay = q1] }) - Returns a value on a <b>easing</b> path, 0 to
+      distance and back to 0
+    </h3>
+    <sprite-meister id="pulse" duration="10s" paths width="200px" playstate="paused" background-color="beige">
+      ${setv1(100-ease({distance:80}),"")}
+      <text x="5" y="${v1}" font-size="10px">frame:${n} v1:${int(v1)} </text>
+      <circle cx="${90}" cy="${v1}" r="5"></circle>
+    </sprite-meister>
+
+    <h3>
+      scale: ({ start:1, mid:5, [end = start], [center = 50] }) - Returns a pulsating SVG matrix definition for scaling
+      SVG groups
+    </h3>
+    <sprite-meister id="pulse" duration="10s" paths width="200px" playstate="paused" background-color="beige">
+      ${setv2(scale({start:1,mid:5}),"")}
+      <g transform="${v2}">
+        <circle cx="50" cy="50" r="5" fill="blue"></circle>
+        <rect x="40" y="47" width="10" height="5" fill="green"></rect>
+      </g>
+      <text x="1" y="${v1}" font-size="6px">${v2} </text>
+    </sprite-meister>
+
+    <h3>circlepath({ radius:n}} - Returns object {x,y} for each frame</h3>
+    <sprite-meister id="circle" duration="10s" paths width="200px" playstate="paused" background-color="beige">
+      ${setv1(circlepath({radius1:25}),"calc x,y circle mottion for every frame")}
       <circle cx="${v1.x}" cy="${v1.y}" r="5"></circle>
-      <text y="12" font-size="10px">${framenr} x:${v1.x} y:${v1.y} ${w}</text>
+      <text x="20px" y="50%" font-size="10px">x:${v1.x} y:${v1.y}</text>
+    </sprite-meister>
+
+    <h3>arcpath({ start:[x,y] , end:[x,y] , control:[dx,dy] }} - Returns object {x,y} for each frame</h3>
+    <sprite-meister id="arcs" duration="10s" paths cell1="250x250" width="200px" background-color="beige">
+      ${setv1(arcpath({start:[5,15],end:[95,95],control:[50,-50],c2:[50,20,40,150]}))}
+      <circle cx="${v1.x}" cy="${v1.y}" r="5"></circle>
+      <text y="12" font-size="10px">n:${framenr} x:${v1.x} y:${v1.y}</text>
     </sprite-meister>
 
     <!-- <sprite-meister id="SVGlogo" duration="1s" paths steps="1" h="300" w="300">
@@ -52,7 +112,6 @@
         transform="matrix(2 0 0 2 40 158)"
       />
     </sprite-meister> -->
-
 
     <!-- <sprite-meister spritemeister id="hamarrow2" duration="4s">
       <g stroke="lightcoral" stroke-width="8" stroke-linecap="round">
@@ -78,8 +137,7 @@
       </g>
     </sprite-meister> -->
 
-
-<!-- 
+    <!-- 
     <sprite-animation src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/57786/dog-walk.svg" steps="1x9" duration=".05s" background="magenta">
     </sprite-animation> -->
   </body>

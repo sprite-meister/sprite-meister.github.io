@@ -625,27 +625,21 @@ customElements.define(
               doc: (x) => "",
               // FUNC: round
               round: ({ value, precision = 0 }) => roundN(value, precision),
+              // INT
+              int: (x) => ~~x,
               // FUNC: minmax
               minmax: ({ value, min, max = value }) => (value < min ? min : value > max ? max : value),
-              // FUNC: pulse
-              pulse: ({ start = 0, mid = 0, end = start }) =>
-                roundN(
-                  Array(framecount)
-                    .fill(framenr)
-                    .map((n, t) => (t <= q2 ? start + t * ((mid - start) / q2) : mid - (t - q2) * ((mid - end) / q2)))[
-                    framenr
-                  ]
-                ),
               // FUNC: ease
               ease: ({
                 distance, //
                 frames = this.steps / 2, //
                 delay = q1,
+                precision = 1,
                 seed = (-4 * distance) / Math.pow(frames * 2, 2), // some kind of constant I picked up somewhere
               }) =>
-                Array(framecount)
+                Number(roundN(Array(framecount)
                   .fill(framenr)
-                  .map((n, t) => seed * Math.pow(((t + frames) % (frames * 2)) - frames, 2) + distance)[framenr],
+                  .map((n, t) => seed * Math.pow(((t + frames) % (frames * 2)) - frames, 2) + distance)[framenr],precision)),
 
               // FUNC: delay
               delay: (time, val, defaultValue = 0) =>
@@ -653,15 +647,35 @@ customElements.define(
                   .fill(framenr)
                   .map((n, t) => (t > time ? val : defaultValue))[framenr],
               // FUNC: scale - returns SVG matrix
-              scale: ({ start, mid, end = start, center = 50 }) =>
-                roundN(
-                  Array(framecount)
-                    .fill(framenr)
-                    .map((n, t) => {
-                      let scale = t <= q2 ? start + t * ((mid - start) / q2) : mid - (t - q2) * ((mid - end) / q2);
-                      return `matrix(${scale} 0 0 ${scale} ${center - center * scale} ${center - center * scale})`;
-                    })[framenr]
-                ),
+              scale: ({
+                start, //
+                mid,
+                end = start,
+                center = 50,
+                precision = 2,
+              }) =>
+                Array(framecount)
+                  .fill(framenr)
+                  .map((n, t) => {
+                    let scale = t <= q2 ? start + t * ((mid - start) / q2) : mid - (t - q2) * ((mid - end) / q2);
+                    scale = roundN(scale, precision);
+                    return `matrix(${scale} 0 0 ${scale} ${center - center * scale} ${roundN(
+                      center - center * scale,
+                      precision
+                    )})`;
+                  })[framenr],
+              // FUNC: pulse
+              pulse: ({
+                start = 0, //start
+                mid = 0,
+                end = start,
+                //color = false, //! pulse returns SINGLE value , not a [x,y] that can be plotted as path
+              }) => {
+                let points = Array(framecount)
+                  .fill(framenr)
+                  .map((n, t) => (t <= q2 ? start + t * ((mid - start) / q2) : mid - (t - q2) * ((mid - end) / q2)));
+                return roundN(points[framenr]);
+              },
               // FUNC circlepath
               circlepath: ({
                 radius = this.vbwidth / 2 - 10, // 10 pixels less than the width
