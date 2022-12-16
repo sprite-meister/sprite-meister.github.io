@@ -4,4 +4,6 @@
 
 ## See Dev.to post:
 
-#### [Create SVG Spritesheet animations with 1 Template Literal String](https://dev.to/dannyengelman/create-svg-spritesheet-animations-with-1-template-literal-string-2mf1-temp-slug-4889828)
+#### Create SVG Spritesheet animations with 1 Template Literal String
+
+https://dev.to/dannyengelman/create-svg-spritesheet-animations-with-1-template-literal-string-3hee
