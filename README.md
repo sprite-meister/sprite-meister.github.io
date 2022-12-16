@@ -1,6 +1,6 @@
 # ``<sprite-meister>`` is a Working Model v0.42 
 
-## https://spritemeister.github.io/
+## https://sprite-meister.github.io/
 
 ## See Dev.to post:
 
